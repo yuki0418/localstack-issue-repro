@@ -1,0 +1,366 @@
+{
+  "version": "44.0.0",
+  "artifacts": {
+    "LocalStackCognitoRepro-test-ApiStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "LocalStackCognitoRepro-test-ApiStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "LocalStackCognitoRepro-test-ApiStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://000000000000/us-west-2",
+      "properties": {
+        "templateFile": "LocalStackCognitoRepro-test-ApiStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::000000000000:role/cdk-hnb659fds-deploy-role-000000000000-us-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::000000000000:role/cdk-hnb659fds-cfn-exec-role-000000000000-us-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-000000000000-us-west-2/5f71a0c0314008dd99277dc1feafa8a9fb3ac9d3003a21f093e23d6a87b9c1f6.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "LocalStackCognitoRepro-test-ApiStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::000000000000:role/cdk-hnb659fds-lookup-role-000000000000-us-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "LocalStackCognitoRepro-test-ApiStack.assets"
+      ],
+      "metadata": {
+        "/LocalStackCognitoRepro-test-ApiStack/UserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPool6BA7E5F2"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClient2F5918F7"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/SignupFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiSignupFunctionServiceRoleB104BA55"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/SignupFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiSignupFunctionServiceRoleDefaultPolicyC3F8CFFE"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/SignupFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiSignupFunctionA0D6F183"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/SigninFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiSigninFunctionServiceRole8428062C"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/SigninFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiSigninFunctionServiceRoleDefaultPolicy3299422C"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/SigninFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiSigninFunction3F69EE77"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/ConfirmFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiConfirmFunctionServiceRoleC333D2E6"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/ConfirmFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiConfirmFunctionServiceRoleDefaultPolicy87A32D3C"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/ConfirmFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiConfirmFunctionABB3F015"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApi83A1757D"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiCloudWatchRole76CB8B23"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiAccount74D4E735"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiDeploymentF9FB239Ec790d29996e4494455b62b0f8f414e5e"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiDeploymentStageprod07FFD2C2"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiEndpoint40245E14"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiOPTIONS84CF6556"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiuser11117968"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiuserOPTIONSCC9072D7"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersignup27939401"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signup/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersignupOPTIONSE877973D"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signup/POST/ApiPermission.LocalStackCognitoReprotestApiStackUserApi7A698924.POST..user.signup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersignupPOSTApiPermissionLocalStackCognitoReprotestApiStackUserApi7A698924POSTusersignup7C3F4F6C"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signup/POST/ApiPermission.Test.LocalStackCognitoReprotestApiStackUserApi7A698924.POST..user.signup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersignupPOSTApiPermissionTestLocalStackCognitoReprotestApiStackUserApi7A698924POSTusersignup94CE2CA3"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signup/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersignupPOSTD4E28DCE"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signin/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersigninF9CE570F"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signin/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersigninOPTIONSE3BB9011"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signin/POST/ApiPermission.LocalStackCognitoReprotestApiStackUserApi7A698924.POST..user.signin": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersigninPOSTApiPermissionLocalStackCognitoReprotestApiStackUserApi7A698924POSTusersigninFC015650"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signin/POST/ApiPermission.Test.LocalStackCognitoReprotestApiStackUserApi7A698924.POST..user.signin": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersigninPOSTApiPermissionTestLocalStackCognitoReprotestApiStackUserApi7A698924POSTusersignin59FEA371"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/signin/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiusersigninPOSTE27C8145"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/confirm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiuserconfirm943BBC2B"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/confirm/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiuserconfirmOPTIONS6F0B18EC"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/confirm/POST/ApiPermission.LocalStackCognitoReprotestApiStackUserApi7A698924.POST..user.confirm": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiuserconfirmPOSTApiPermissionLocalStackCognitoReprotestApiStackUserApi7A698924POSTuserconfirm9EB67BF2"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/confirm/POST/ApiPermission.Test.LocalStackCognitoReprotestApiStackUserApi7A698924.POST..user.confirm": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiuserconfirmPOSTApiPermissionTestLocalStackCognitoReprotestApiStackUserApi7A698924POSTuserconfirm7FABA9A2"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserApi/UserApi/Default/user/confirm/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserApiuserconfirmPOST41440AE0"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiF5A9A8A7"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/DefaultStage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiDefaultStage3EEB07D6"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--signup/SignupIntegration/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTusersignupSignupIntegrationE228FFBF"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--signup/SignupIntegration-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTusersignupSignupIntegrationPermissionC5CF3760"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--signup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTusersignup2F821691"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--signin/SigninIntegration/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTusersigninSigninIntegrationD6AF1DDD"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--signin/SigninIntegration-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTusersigninSigninIntegrationPermission5F7F59D2"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--signin/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTusersigninE239E5A0"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--confirm/ConfirmIntegration/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTuserconfirmConfirmIntegration0954C10C"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--confirm/ConfirmIntegration-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTuserconfirmConfirmIntegrationPermissionDA644735"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApi/POST--user--confirm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiPOSTuserconfirm4947FB48"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/ApiEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiEndpoint"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/HttpApiEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HttpApiEndpoint"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/LocalStackCognitoRepro-test-ApiStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "LocalStackCognitoRepro-test-ApiStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1019.1"
+}
