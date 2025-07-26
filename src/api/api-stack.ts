@@ -66,6 +66,12 @@ export class ApiStack extends Stack {
       generateSecret: false,
     });
 
+    this.authorizer = new HttpUserPoolAuthorizer(
+      "CognitoAuthorizer",
+      this.userPool,
+      { userPoolClients: [this.userPoolClient] }
+    );
+
     // Create UserApi construct
     this.userApi = new UserApi(this, "UserApi", {
       userPool: this.userPool,
@@ -124,6 +130,17 @@ export class ApiStack extends Stack {
       integration: new HttpLambdaIntegration(
         "ConfirmIntegration",
         this.userApi.confirmFunction
+      ),
+    });
+
+    this.httpApi.addRoutes({
+      path: "/user/email",
+      methods: [HttpMethod.POST],
+      authorizer: this.authorizer,
+      authorizationScopes: ["aws.cognito.signin.user.admin"],
+      integration: new HttpLambdaIntegration(
+        "ChangeEmailIntegration",
+        this.userApi.changeEmailFn
       ),
     });
 

@@ -18,6 +18,7 @@ export class UserApi extends Construct {
   public readonly signinFunction: aws_lambda_nodejs.NodejsFunction;
   public readonly signupFunction: aws_lambda_nodejs.NodejsFunction;
   public readonly confirmFunction: aws_lambda_nodejs.NodejsFunction;
+  public readonly changeEmailFn: aws_lambda_nodejs.NodejsFunction;
 
   constructor(scope: Construct, id: string, props: UserApiProps) {
     super(scope, id);
@@ -73,6 +74,19 @@ export class UserApi extends Construct {
       }
     );
 
+    // Change email
+    this.changeEmailFn = new aws_lambda_nodejs.NodejsFunction(this, "email", {
+      entry: path.join(__dirname, "user-api.email.ts"),
+      environment: {
+        COGNITO_CLIENT_ID: props.userPoolClientId,
+      },
+      bundling: {
+        externalModules: [],
+        forceDockerBundling: !!process.env.CI,
+      },
+      timeout: Duration.seconds(30),
+    });
+
     // Grant permissions to interact with Cognito
     props.userPool.grant(this.signupFunction, "cognito-idp:SignUp");
     props.userPool.grant(
@@ -81,6 +95,11 @@ export class UserApi extends Construct {
       "cognito-idp:GetUser"
     );
     props.userPool.grant(this.confirmFunction, "cognito-idp:ConfirmSignUp");
+    props.userPool.grant(
+      this.changeEmailFn,
+      "cognito-idp:UpdateUserAttributes",
+      "cognito-idp:GetUser"
+    );
 
     // Create API Gateway
     this.api = new RestApi(this, "UserApi", {
@@ -107,5 +126,9 @@ export class UserApi extends Construct {
     userResource
       .addResource("confirm")
       .addMethod("POST", new LambdaIntegration(this.confirmFunction));
+
+    userResource
+      .addResource("email")
+      .addMethod("POST", new LambdaIntegration(this.changeEmailFn));
   }
 }
