@@ -19,6 +19,7 @@ export class UserApi extends Construct {
   public readonly signupFunction: aws_lambda_nodejs.NodejsFunction;
   public readonly confirmFunction: aws_lambda_nodejs.NodejsFunction;
   public readonly changeEmailFn: aws_lambda_nodejs.NodejsFunction;
+  public readonly changePasswordFn: aws_lambda_nodejs.NodejsFunction;
 
   constructor(scope: Construct, id: string, props: UserApiProps) {
     super(scope, id);
@@ -87,6 +88,23 @@ export class UserApi extends Construct {
       timeout: Duration.seconds(30),
     });
 
+    // Change password
+    this.changePasswordFn = new aws_lambda_nodejs.NodejsFunction(
+      this,
+      "password",
+      {
+        entry: path.join(__dirname, "user-api.password.ts"),
+        environment: {
+          COGNITO_CLIENT_ID: props.userPoolClientId,
+        },
+        bundling: {
+          externalModules: [],
+          forceDockerBundling: !!process.env.CI,
+        },
+        timeout: Duration.seconds(30),
+      }
+    );
+
     // Grant permissions to interact with Cognito
     props.userPool.grant(this.signupFunction, "cognito-idp:SignUp");
     props.userPool.grant(
@@ -99,6 +117,10 @@ export class UserApi extends Construct {
       this.changeEmailFn,
       "cognito-idp:UpdateUserAttributes",
       "cognito-idp:GetUser"
+    );
+    props.userPool.grant(
+      this.changeEmailFn,
+      "cognito-idp:AdminUpdateUserAttributes"
     );
 
     // Create API Gateway
@@ -130,5 +152,9 @@ export class UserApi extends Construct {
     userResource
       .addResource("email")
       .addMethod("POST", new LambdaIntegration(this.changeEmailFn));
+
+    userResource
+      .addResource("password")
+      .addMethod("POST", new LambdaIntegration(this.changePasswordFn));
   }
 }

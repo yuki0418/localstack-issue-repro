@@ -53,6 +53,13 @@ export class ApiStack extends Stack {
         emailSubject: "Verify your email",
         emailBody: "Your verification code is {####}",
       },
+      passwordPolicy: {
+        minLength: 8,
+        requireDigits: false,
+        requireLowercase: false,
+        requireSymbols: false,
+        requireUppercase: false,
+      },
     });
 
     // Create User Pool Client
@@ -141,6 +148,17 @@ export class ApiStack extends Stack {
       integration: new HttpLambdaIntegration(
         "ChangeEmailIntegration",
         this.userApi.changeEmailFn
+      ),
+    });
+
+    this.httpApi.addRoutes({
+      path: "/user/password",
+      methods: [HttpMethod.PUT],
+      authorizer: this.authorizer,
+      authorizationScopes: ["aws.cognito.signin.user.admin"],
+      integration: new HttpLambdaIntegration(
+        "ChangePasswordIntegration",
+        this.userApi.changePasswordFn
       ),
     });
 

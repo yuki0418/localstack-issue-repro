@@ -48,22 +48,34 @@ curl -X POST 'https://test.execute-api.localhost.localstack.cloud:4566/user/sign
 ```
 You will get the access token and IdToken in the response.
 
-6. Change the email address
+6. Change the password
 ```bash
-curl -X POST 'https://test.execute-api.localhost.localstack.cloud:4566/user/email' \
+curl -X PUT 'https://test.execute-api.localhost.localstack.cloud:4566/user/password' \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer <Access Token>" \
--d '{"email": "test+1@example.com"}'
+-d '{"oldPassword": "P@ss1234", "newPassword": "short"}'
 ```
 
 You will get with 
 ```
-HTTP/2 401 
+HTTP/2 200 
 server: TwistedWeb/24.3.0
-date: Sat, 26 Jul 2025 02:44:36 GMT
+date: Fri, 08 Aug 2025 00:59:31 GMT
 content-type: application/json
-apigw-requestid: 18e4f871
-content-length: 26
+content-length: 43
+apigw-requestid: 8fe23730
+x-localstack: true
 
-{"message":"Unauthorized"}% 
+{"message":"Password changed successfully"}
+```
+
+But you should get an error because cognito setting.
+```typescript
+passwordPolicy: {
+  minLength: 8,
+  requireDigits: false,
+  requireLowercase: false,
+  requireSymbols: false,
+  requireUppercase: false,
+},
 ```
