@@ -1,10 +1,6 @@
 import { Stack, type StackProps, CfnOutput, Tags } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import {
-  UserPool,
-  UserPoolClient,
-  VerificationEmailStyle,
-} from "aws-cdk-lib/aws-cognito";
+import { UserPool, UserPoolClient } from "aws-cdk-lib/aws-cognito";
 import {
   CorsHttpMethod,
   HttpApi,
@@ -14,75 +10,80 @@ import { HttpUserPoolAuthorizer } from "aws-cdk-lib/aws-apigatewayv2-authorizers
 import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
 import { UserApi } from "./user-api";
 
+interface Props extends StackProps {
+  userPool: UserPool;
+  userPoolClient: UserPoolClient;
+}
+
 export class ApiStack extends Stack {
   public readonly userApi: UserApi;
-  public readonly userPool: UserPool;
-  public readonly userPoolClient: UserPoolClient;
   public readonly httpApi: HttpApi;
   public readonly authorizer: HttpUserPoolAuthorizer;
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    // Create Cognito User Pool
-    this.userPool = new UserPool(this, "UserPool", {
-      userPoolName: "localstack-cognito-repro-user-pool",
-      selfSignUpEnabled: true,
-      signInAliases: {
-        email: true,
-      },
-      autoVerify: {
-        email: true,
-      },
-      standardAttributes: {
-        email: {
-          required: true,
-          mutable: true,
-        },
-        givenName: {
-          required: false,
-          mutable: true,
-        },
-        familyName: {
-          required: false,
-          mutable: true,
-        },
-      },
-      userVerification: {
-        emailStyle: VerificationEmailStyle.CODE,
-        emailSubject: "Verify your email",
-        emailBody: "Your verification code is {####}",
-      },
-      passwordPolicy: {
-        minLength: 8,
-        requireDigits: false,
-        requireLowercase: false,
-        requireSymbols: false,
-        requireUppercase: false,
-      },
-    });
+    const { userPool, userPoolClient } = props;
 
-    // Create User Pool Client
-    this.userPoolClient = new UserPoolClient(this, "UserPoolClient", {
-      userPool: this.userPool,
-      userPoolClientName: "localstack-cognito-repro-client",
-      authFlows: {
-        userPassword: true,
-        userSrp: true,
-      },
-      generateSecret: false,
-    });
+    // // Create Cognito User Pool
+    // this.userPool = new UserPool(this, "UserPool", {
+    //   userPoolName: "localstack-cognito-repro-user-pool",
+    //   selfSignUpEnabled: true,
+    //   signInAliases: {
+    //     email: true,
+    //   },
+    //   autoVerify: {
+    //     email: true,
+    //   },
+    //   standardAttributes: {
+    //     email: {
+    //       required: true,
+    //       mutable: true,
+    //     },
+    //     givenName: {
+    //       required: false,
+    //       mutable: true,
+    //     },
+    //     familyName: {
+    //       required: false,
+    //       mutable: true,
+    //     },
+    //   },
+    //   userVerification: {
+    //     emailStyle: VerificationEmailStyle.CODE,
+    //     emailSubject: "Verify your email",
+    //     emailBody: "Your verification code is {####}",
+    //   },
+    //   passwordPolicy: {
+    //     minLength: 8,
+    //     requireDigits: false,
+    //     requireLowercase: false,
+    //     requireSymbols: false,
+    //     requireUppercase: false,
+    //   },
+    // });
+
+    // // Create User Pool Client
+    // this.userPoolClient = new UserPoolClient(this, "UserPoolClient", {
+    //   userPool: this.userPool,
+    //   userPoolClientName: "localstack-cognito-repro-client",
+    //   authFlows: {
+    //     userPassword: true,
+    //     userSrp: true,
+    //   },
+    //   generateSecret: false,
+    // });
 
     this.authorizer = new HttpUserPoolAuthorizer(
       "CognitoAuthorizer",
-      this.userPool,
-      { userPoolClients: [this.userPoolClient] }
+      userPool,
+      { userPoolClients: [userPoolClient] }
     );
 
     // Create UserApi construct
     this.userApi = new UserApi(this, "UserApi", {
-      userPool: this.userPool,
-      userPoolClientId: this.userPoolClient.userPoolClientId,
+      userPool: userPool,
+      userPoolClientId: userPoolClient.userPoolClientId,
     });
 
     // Create HTTP API Gateway V2
@@ -106,9 +107,9 @@ export class ApiStack extends Stack {
     // Create Cognito User Pool Authorizer
     this.authorizer = new HttpUserPoolAuthorizer(
       "UserPoolAuthorizer",
-      this.userPool,
+      userPool,
       {
-        userPoolClients: [this.userPoolClient],
+        userPoolClients: [userPoolClient],
       }
     );
 
@@ -162,14 +163,24 @@ export class ApiStack extends Stack {
       ),
     });
 
+    this.httpApi.addRoutes({
+      path: "/user/forgotPassword",
+      methods: [HttpMethod.POST],
+      authorizationScopes: ["aws.cognito.signin.user.admin"],
+      integration: new HttpLambdaIntegration(
+        "ForgotPasswordIntegration",
+        this.userApi.forgotPasswordFn
+      ),
+    });
+
     // Stack outputs
     new CfnOutput(this, "UserPoolId", {
-      value: this.userPool.userPoolId,
+      value: userPool.userPoolId,
       description: "Cognito User Pool ID",
     });
 
     new CfnOutput(this, "UserPoolClientId", {
-      value: this.userPoolClient.userPoolClientId,
+      value: userPoolClient.userPoolClientId,
       description: "Cognito User Pool Client ID",
     });
 

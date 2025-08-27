@@ -40,42 +40,35 @@ curl -X POST 'https://test.execute-api.localhost.localstack.cloud:4566/user/conf
 -d '{"email": "test@example.com", "confirmationCode": "<confirmation_code>"}'
 ```
 
-5. Sign in the user to get the access token
+5. Forget password
 ```bash
-curl -X POST 'https://test.execute-api.localhost.localstack.cloud:4566/user/signin' \
+curl -X POST 'https://test.execute-api.localhost.localstack.cloud:4566/user/forgotPassword' \
 -H "Content-Type: application/json" \
--d '{"email": "test@example.com", "password": "P@ss1234"}'
-```
-You will get the access token and IdToken in the response.
-
-6. Change the password
-```bash
-curl -X PUT 'https://test.execute-api.localhost.localstack.cloud:4566/user/password' \
--H "Content-Type: application/json" \
--H "Authorization: Bearer <Access Token>" \
--d '{"oldPassword": "P@ss1234", "newPassword": "short"}'
+-d '{"email": "test@example.com"}'
 ```
 
 You will get with 
 ```
-HTTP/2 200 
+HTTP/2 500 
 server: TwistedWeb/24.3.0
-date: Fri, 08 Aug 2025 00:59:31 GMT
-content-type: application/json
-content-length: 43
-apigw-requestid: 8fe23730
+date: Wed, 27 Aug 2025 00:31:20 GMT
+content-type: text/plain; charset=utf-8
+content-length: 228
+apigw-requestid: 9ec8986a
 x-localstack: true
 
-{"message":"Password changed successfully"}
+{"error":{"name":"UserLambdaValidationException","$fault":"client","$metadata":{"httpStatusCode":400,"requestId":"4511e906-3a40-4f6c-b0a8-baff876f2cb3","attempts":1,"totalRetryDelay":0},"__type":"UserLambdaValidationException"}}%
 ```
 
-But you should get an error because cognito setting.
-```typescript
-passwordPolicy: {
-  minLength: 8,
-  requireDigits: false,
-  requireLowercase: false,
-  requireSymbols: false,
-  requireUppercase: false,
-},
+If you check logs of the `/aws/lambda/test-user-pool-stack-custommessage{random_suffix}`, you will see
 ```
+ERROR Invoke Error {"errorType":"Error","errorMessage":"userAttributes is required for forgot password","stack":["Error: userAttributes is required for forgot password"," at Runtime.handler (/var/task/index.js:884514:11)"," at Runtime.handleOnceNonStreaming (file:///var/runtime/index.mjs:1206:29)"]}
+```
+
+Because `event.request` does not have `userAttributes` for `CustomMessage_ForgotPassword` trigger.
+```
+event.request response
+{ codeParameter: '827851', usernameParameter: 'test@example.com' }
+```
+
+This should have `userAttributes` according to [AWS Docs](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-custom-message.html#cognito-user-pools-lambda-trigger-syntax-custom-message).

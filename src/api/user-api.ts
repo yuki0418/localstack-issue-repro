@@ -20,6 +20,7 @@ export class UserApi extends Construct {
   public readonly confirmFunction: aws_lambda_nodejs.NodejsFunction;
   public readonly changeEmailFn: aws_lambda_nodejs.NodejsFunction;
   public readonly changePasswordFn: aws_lambda_nodejs.NodejsFunction;
+  public readonly forgotPasswordFn: aws_lambda_nodejs.NodejsFunction;
 
   constructor(scope: Construct, id: string, props: UserApiProps) {
     super(scope, id);
@@ -105,6 +106,23 @@ export class UserApi extends Construct {
       }
     );
 
+    // Forgot password
+    this.forgotPasswordFn = new aws_lambda_nodejs.NodejsFunction(
+      this,
+      "forgotPassword",
+      {
+        entry: path.join(__dirname, "user-api.forgot-password.ts"),
+        environment: {
+          COGNITO_CLIENT_ID: props.userPoolClientId,
+        },
+        bundling: {
+          externalModules: [],
+          forceDockerBundling: !!process.env.CI,
+        },
+        timeout: Duration.seconds(30),
+      }
+    );
+
     // Grant permissions to interact with Cognito
     props.userPool.grant(this.signupFunction, "cognito-idp:SignUp");
     props.userPool.grant(
@@ -156,5 +174,9 @@ export class UserApi extends Construct {
     userResource
       .addResource("password")
       .addMethod("POST", new LambdaIntegration(this.changePasswordFn));
+
+    userResource
+      .addResource("forgotPassword")
+      .addMethod("POST", new LambdaIntegration(this.forgotPasswordFn));
   }
 }
